@@ -21,7 +21,7 @@ let dataTable;
 let rowCount; 
 
 //x axis
-let months = [1,2,3,4,5,6,7,8,9,10,11,12];
+let months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
 let xAxisGap = 50;
 
 // get rain qty
@@ -45,7 +45,9 @@ function preload(){
 function setup() {
   createCanvas(600, 600); 
   noStroke();
-  loop();
+  rectMode(CENTER);
+  textAlign(CENTER);
+  textSize(24);
 }
 
 function draw() {
@@ -60,13 +62,35 @@ function rainMap(){
     
     rainQty = float(dataTable.get(i,'rain'));
     monthVal = int(dataTable.get(i,'month'));
+    yearVal = int(dataTable.get(i,'year'));
     
-    fill(10,10,200,rainQty);
+    let dotO = 0.5;
     //dot size
     let dotS = 20;
     let dotX = monthVal*xAxisGap-40;
     let dotY = rainQty*2;
     
-    ellipse(dotX,dotY, dotS,dotS);
+    let dotDist = dist(dotX,dotY,mouseX,mouseY);
+    
+    if (dotDist < 10){
+      dotS = 100;
+      dotO = 1;
+      
+      stroke(255,255,255);
+      strokeWeight(2);
+      fill(10,10,255,rainQty*dotO);
+      ellipse(dotX,dotY, dotS,dotS);
+      text(yearVal,dotX,dotY-10);
+      text(months[monthVal-1],dotX,dotY+20);
+    }
+    else{
+      dotS = 20;
+      dotO =0.5;
+      
+      noStroke();
+      fill(10,10,255,rainQty*dotO);
+      ellipse(dotX,dotY, dotS,dotS);
+    }
+    
   }
 }
